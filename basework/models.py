@@ -1,5 +1,5 @@
 from django.db import models
-from work.models import Area, Province, can_not_equal_zero
+from work.models import can_not_equal_zero
 
 # Create your models here.
 
@@ -56,3 +56,177 @@ class ConstantEg(models.Model):
         verbose_name = "能源常量"
 
 
+# 地区数据
+# 年度数据
+class Annual_data(models.Model):
+    # province = models.ForeignKey(to=Province, null=False, blank=False, on_delete=models.CASCADE, verbose_name='省份', related_name='data_record_ls')
+    # area = models.ForeignKey(to=Area, null=False, blank=False, on_delete=models.CASCADE, verbose_name='地区', related_name='data_record_ls')
+    province = models.CharField(max_length=50, verbose_name='省份', null=False, blank=False)
+    area = models.CharField(max_length=50, verbose_name='地区', null=False, blank=False)
+    year = models.IntegerField(verbose_name='年度', null=False, blank=False)
+    # 年度能源消耗量
+    Consume_Raw_coal = models.FloatField(verbose_name='原煤消耗量')
+    Consume_Clean_coal = models.FloatField(verbose_name='洗精煤消耗量')
+    Consume_Coke = models.FloatField(verbose_name='焦炭消耗量')
+    Consume_Briquette = models.FloatField(verbose_name='型煤消耗量')
+    Consume_Other_coking_products = models.FloatField(verbose_name='其他焦化产品消耗量')
+    Consume_Crude = models.FloatField(verbose_name='原油消耗量')
+    Consume_Fuel_oil = models.FloatField(verbose_name='燃料油消耗量')
+    Consume_Gasoline = models.FloatField(verbose_name='汽油消耗量')
+    Consume_Diesel = models.FloatField(verbose_name='柴油消耗量')
+    Consume_Kerosene = models.FloatField(verbose_name='煤油消耗量')
+    Consume_Liquefied_petroleum_gas = models.FloatField(verbose_name='液化石油气消耗量')
+    Consume_Refinery_dry_gas = models.FloatField(verbose_name='炼厂干气消耗量')
+    Consume_Naphtha = models.FloatField(verbose_name='石脑油消耗量')
+    Consume_Asphalt = models.FloatField(verbose_name='沥青消耗量')
+    Consume_Lubricating_oil = models.FloatField(verbose_name='润滑油消耗量')
+    Consume_Petroleum_coke = models.FloatField(verbose_name='石油焦消耗量')
+    Consume_Natural_gas = models.FloatField(verbose_name='天然气消耗量')
+
+    Consume_Cement = models.FloatField(verbose_name='水泥消耗量')
+    Consume_Steel = models.FloatField(verbose_name='钢铁消耗量')
+    # 年度土地消耗量
+    Consume_Farmland = models.FloatField(verbose_name='农地消耗量')
+    Consume_Woodland = models.FloatField(verbose_name='林地消耗量')
+    Consume_Pastureland = models.FloatField(verbose_name='畜牧地消耗量')
+    Consume_Fishing_ground = models.FloatField(verbose_name='渔场消耗量')
+    Consume_Construction_land = models.FloatField(verbose_name='建设用地消耗量')
+
+    class Meta:
+        ordering = '-year', 'area' ,'province'
+        verbose_name = '地区年度资源消耗量'
+        verbose_name_plural = verbose_name
+        unique_together = [('province', 'area', 'year')]
+
+    def __str__(self):
+        return f'{self.province}, {self.area}, {self.year}'
+
+
+# 计算字段
+class Calculated_value(models.Model):
+    # province = models.ForeignKey(to=Province, null=False, blank=False, on_delete=models.CASCADE, verbose_name='省份', related_name='data_record_ls')
+    # area = models.ForeignKey(to=Area, null=False, blank=False, on_delete=models.CASCADE, verbose_name='地区', related_name='data_record_ls')
+    province = models.CharField(max_length=50, verbose_name='省份', null=False, blank=False)
+    area = models.CharField(max_length=50, verbose_name='地区', null=False, blank=False)
+    year = models.IntegerField(verbose_name='年度', null=False, blank=False)
+    
+    Cal_Raw_coal = models.FloatField(verbose_name='原煤_年度计算值', null=True, blank=True)
+    Cal_Clean_coal = models.FloatField(verbose_name='洗精煤_年度计算值', null=True, blank=True)
+    Cal_Coke = models.FloatField(verbose_name='焦炭_年度计算值', null=True, blank=True)
+    Cal_Briquette = models.FloatField(verbose_name='型煤_年度计算值', null=True, blank=True)
+    Cal_Other_coking_products = models.FloatField(verbose_name='其他焦化产品_年度计算值', null=True, blank=True)
+    Cal_Crude = models.FloatField(verbose_name='原油_年度计算值', null=True, blank=True)
+    Cal_Fuel_oil = models.FloatField(verbose_name='燃料油_年度计算值', null=True, blank=True)
+    Cal_Gasoline = models.FloatField(verbose_name='汽油_年度计算值', null=True, blank=True)
+    Cal_Diesel = models.FloatField(verbose_name='柴油_年度计算值', null=True, blank=True)
+    Cal_Kerosene = models.FloatField(verbose_name='煤油_年度计算值', null=True, blank=True)
+    Cal_Liquefied_petroleum_gas = models.FloatField(verbose_name='液化石油气_年度计算值', null=True, blank=True)
+    Cal_Refinery_dry_gas = models.FloatField(verbose_name='炼厂干气_年度计算值', null=True, blank=True)
+    Cal_Naphtha = models.FloatField(verbose_name='石脑油_年度计算值', null=True, blank=True)
+    Cal_Asphalt = models.FloatField(verbose_name='沥青_年度计算值', null=True, blank=True)
+    Cal_Lubricating_oil = models.FloatField(verbose_name='润滑油_年度计算值', null=True, blank=True)
+    Cal_Petroleum_coke = models.FloatField(verbose_name='石油焦_年度计算值', null=True, blank=True)
+    Cal_Natural_gas = models.FloatField(verbose_name='天然气_年度计算值', null=True, blank=True)
+    GHG_Emission  = models.FloatField(verbose_name='温室气体排放量_年度计算值', null=True, blank=True)
+    CO2_Emission = models.FloatField(verbose_name='二氧化碳排放量_年度计算值', null=True, blank=True)
+    Cal_Cement = models.FloatField(verbose_name='水泥_年度计算值', null=True, blank=True)
+    Cal_Steel = models.FloatField(verbose_name='钢铁_年度计算值', null=True, blank=True)
+    GHG_Emission  = models.FloatField(verbose_name='温室气体排放量_年度计算值', null=True, blank=True)
+    CO2_Emission = models.FloatField(verbose_name='二氧化碳排放量_年度计算值', null=True, blank=True)
+    Total_CO2_Emission = models.FloatField(verbose_name='二氧化碳排放总量_年度计算值', null=True, blank=True)
+    Cal_EF = models.FloatField(verbose_name='生态足迹_年度计算值', null=True, blank=True)
+
+    class Meta:
+        ordering = '-year', 'area', 'province'
+        verbose_name = '地区年度计算值'
+        verbose_name_plural = verbose_name
+        unique_together = [('province', 'area', 'year')]
+
+    def __str__(self):
+        return f'{self.province}, {self.area}, {self.year}'
+
+
+
+# 省级数据
+# 年度数据
+class Prov_Annual_data(models.Model):
+    # province = models.ForeignKey(to=Province, null=False, blank=False, on_delete=models.CASCADE, verbose_name='省份', related_name='data_record_ls')
+    # area = models.ForeignKey(to=Area, null=False, blank=False, on_delete=models.CASCADE, verbose_name='地区', related_name='data_record_ls')
+    province = models.CharField(max_length=255, verbose_name='省份', null=False, blank=False)
+    year = models.IntegerField(verbose_name='年度', null=False, blank=False)
+    # 年度能源消耗量
+    Consume_Raw_coal = models.FloatField(verbose_name='原煤消耗量')
+    Consume_Clean_coal = models.FloatField(verbose_name='洗精煤消耗量')
+    Consume_Coke = models.FloatField(verbose_name='焦炭消耗量')
+    Consume_Briquette = models.FloatField(verbose_name='型煤消耗量')
+    Consume_Other_coking_products = models.FloatField(verbose_name='其他焦化产品消耗量')
+    Consume_Crude = models.FloatField(verbose_name='原油消耗量')
+    Consume_Fuel_oil = models.FloatField(verbose_name='燃料油消耗量')
+    Consume_Gasoline = models.FloatField(verbose_name='汽油消耗量')
+    Consume_Diesel = models.FloatField(verbose_name='柴油消耗量')
+    Consume_Kerosene = models.FloatField(verbose_name='煤油消耗量')
+    Consume_Liquefied_petroleum_gas = models.FloatField(verbose_name='液化石油气消耗量')
+    Consume_Refinery_dry_gas = models.FloatField(verbose_name='炼厂干气消耗量')
+    Consume_Naphtha = models.FloatField(verbose_name='石脑油消耗量')
+    Consume_Asphalt = models.FloatField(verbose_name='沥青消耗量')
+    Consume_Lubricating_oil = models.FloatField(verbose_name='润滑油消耗量')
+    Consume_Petroleum_coke = models.FloatField(verbose_name='石油焦消耗量')
+    Consume_Natural_gas = models.FloatField(verbose_name='天然气消耗量')
+
+    Consume_Cement = models.FloatField(verbose_name='水泥消耗量')
+    Consume_Steel = models.FloatField(verbose_name='钢铁消耗量')
+    # 年度土地消耗量
+    Consume_Farmland = models.FloatField(verbose_name='农地消耗量')
+    Consume_Woodland = models.FloatField(verbose_name='林地消耗量')
+    Consume_Pastureland = models.FloatField(verbose_name='畜牧地消耗量')
+    Consume_Fishing_ground = models.FloatField(verbose_name='渔场消耗量')
+    Consume_Construction_land = models.FloatField(verbose_name='建设用地消耗量')
+
+    class Meta:
+        ordering = '-year', 'province'
+        verbose_name = '省级年度资源消耗量'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return f'{self.province},{self.year}'
+
+
+# 计算字段
+class Prov_Calculated_value(models.Model):
+    # province = models.ForeignKey(to=Province, null=False, blank=False, on_delete=models.CASCADE, verbose_name='省份', related_name='data_record_ls')
+    # area = models.ForeignKey(to=Area, null=False, blank=False, on_delete=models.CASCADE, verbose_name='地区', related_name='data_record_ls')
+    province = models.CharField(max_length=255, verbose_name='省份', null=False, blank=False)
+    year = models.IntegerField(verbose_name='年度', null=False, blank=False)
+    Cal_Raw_coal = models.FloatField(verbose_name='原煤_年度计算值', null=True, blank=True)
+    Cal_Clean_coal = models.FloatField(verbose_name='洗精煤_年度计算值', null=True, blank=True)
+    Cal_Coke = models.FloatField(verbose_name='焦炭_年度计算值', null=True, blank=True)
+    Cal_Briquette = models.FloatField(verbose_name='型煤_年度计算值', null=True, blank=True)
+    Cal_Other_coking_products = models.FloatField(verbose_name='其他焦化产品_年度计算值', null=True, blank=True)
+    Cal_Crude = models.FloatField(verbose_name='原油_年度计算值', null=True, blank=True)
+    Cal_Fuel_oil = models.FloatField(verbose_name='燃料油_年度计算值', null=True, blank=True)
+    Cal_Gasoline = models.FloatField(verbose_name='汽油_年度计算值', null=True, blank=True)
+    Cal_Diesel = models.FloatField(verbose_name='柴油_年度计算值', null=True, blank=True)
+    Cal_Kerosene = models.FloatField(verbose_name='煤油_年度计算值', null=True, blank=True)
+    Cal_Liquefied_petroleum_gas = models.FloatField(verbose_name='液化石油气_年度计算值', null=True, blank=True)
+    Cal_Refinery_dry_gas = models.FloatField(verbose_name='炼厂干气_年度计算值', null=True, blank=True)
+    Cal_Naphtha = models.FloatField(verbose_name='石脑油_年度计算值', null=True, blank=True)
+    Cal_Asphalt = models.FloatField(verbose_name='沥青_年度计算值', null=True, blank=True)
+    Cal_Lubricating_oil = models.FloatField(verbose_name='润滑油_年度计算值', null=True, blank=True)
+    Cal_Petroleum_coke = models.FloatField(verbose_name='石油焦_年度计算值', null=True, blank=True)
+    Cal_Natural_gas = models.FloatField(verbose_name='天然气_年度计算值', null=True, blank=True)
+    GHG_Emission  = models.FloatField(verbose_name='温室气体排放量_年度计算值', null=True, blank=True)
+    CO2_Emission = models.FloatField(verbose_name='二氧化碳排放量_年度计算值', null=True, blank=True)
+    Cal_Cement = models.FloatField(verbose_name='水泥_年度计算值', null=True, blank=True)
+    Cal_Steel = models.FloatField(verbose_name='钢铁_年度计算值', null=True, blank=True)
+    GHG_Emission  = models.FloatField(verbose_name='温室气体排放量_年度计算值', null=True, blank=True)
+    CO2_Emission = models.FloatField(verbose_name='二氧化碳排放量_年度计算值', null=True, blank=True)
+    Total_CO2_Emission = models.FloatField(verbose_name='二氧化碳排放总量_年度计算值', null=True, blank=True)
+    Cal_EF = models.FloatField(verbose_name='生态足迹_年度计算值', null=True, blank=True)
+
+    class Meta:
+        ordering = '-year', 'province'
+        verbose_name = '省级年度计算值'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return f'{self.province},{self.year}'
