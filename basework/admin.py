@@ -44,6 +44,9 @@ class Annual_dataAdmin(admin.ModelAdmin):
                 (
                     'Consume_Farmland','Consume_Woodland','Consume_Pastureland','Consume_Fishing_ground','Consume_Construction_land',
                 ),
+                (
+                    'GDP','Sown_area','Total_population','Total_power_generation','Total_energy_consumption','Carbon_dioxide_emissions','Total_water_consumption','The_total_area','Ecological_footprint','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Nuclear_power_generation','Wind_power_generation','Hydropower_generation','Photovoltaic_power_generation','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
+                ),
             )
         }),
     )
@@ -127,6 +130,12 @@ class Prov_Annual_dataAdmin(admin.ModelAdmin):
                 (
                     'Consume_Farmland','Consume_Woodland','Consume_Pastureland','Consume_Fishing_ground','Consume_Construction_land',
                 ),
+                (
+                    'per_unit_gdp','co2_per_gdp','water_per_gdp','planting_area','edu_years','ef_per','water_per','pension_cov','medical_cov','unemployment_cov','renewable_energy_per',
+                ),
+                (
+                    'GDP','Sown_area','Total_population','Total_power_generation','Total_energy_consumption','Carbon_dioxide_emissions','Total_water_consumption','The_total_area','Ecological_footprint','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Nuclear_power_generation','Wind_power_generation','Hydropower_generation','Photovoltaic_power_generation','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
+                ),
             )
         }),
     )
@@ -190,6 +199,9 @@ class Calculated_valueAdmin(admin.ModelAdmin):
                 (
                     'Cal_EF',
                 ),
+                (
+                    'per_unit_gdp','co2_per_gdp','water_per_gdp','planting_area','edu_years','ef_per','water_per','pension_cov','medical_cov','unemployment_cov','renewable_energy_per',
+                ),
             )
         }),
     )
@@ -219,6 +231,9 @@ class Prov_Calculated_valueAdmin(admin.ModelAdmin):
                 ),
                 (
                     'Cal_EF',
+                ),
+                (
+                    'per_unit_gdp','co2_per_gdp','water_per_gdp','planting_area','edu_years','ef_per','water_per','pension_cov','medical_cov','unemployment_cov','renewable_energy_per',
                 ),
             )
         }),

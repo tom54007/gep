@@ -93,9 +93,33 @@ class Annual_data(models.Model):
     Consume_Fishing_ground = models.FloatField(verbose_name='渔场消耗量')
     Consume_Construction_land = models.FloatField(verbose_name='建设用地消耗量')
 
+    # 年度国民经济数据
+    GDP = models.FloatField(verbose_name='地区当年生产总值', null=False, blank=False)
+    Sown_area = models.FloatField(verbose_name='地区当年播种面积', null=False, blank=False)
+    Total_population = models.FloatField(verbose_name='地区当年总人口', null=False, blank=False)
+    Total_power_generation = models.FloatField(verbose_name='地区当年总发电量', null=False, blank=False)
+    Total_energy_consumption = models.FloatField(verbose_name='地区当年能源消费总量', null=False, blank=False)
+    Carbon_dioxide_emissions = models.FloatField(verbose_name='地区当年二氧化碳排放量', null=False, blank=False)
+    Total_water_consumption = models.FloatField(verbose_name='地区当年用水总量', null=False, blank=False)
+    The_total_area = models.FloatField(verbose_name='地区当年总面积', null=False, blank=False)
+    Ecological_footprint = models.FloatField(verbose_name='地区当年生态足迹', null=False, blank=False)
+    Number_of_employees_in_basic_pension_insurance = models.FloatField(verbose_name='地区当年基本养老保险职工人数', null=False, blank=False)
+    Number_of_basic_medical_insurance = models.FloatField(verbose_name='地区当年基本医疗保险人数', null=False, blank=False)
+    Number_of_unemployment_insurance = models.FloatField(verbose_name='地区当年失业保险人数', null=False, blank=False)
+    Nuclear_power_generation = models.FloatField(verbose_name='地区当年核电发电量', null=False, blank=False)
+    Wind_power_generation = models.FloatField(verbose_name='地区当年风电发电量', null=False, blank=False)
+    Hydropower_generation = models.FloatField(verbose_name='地区当年水电发电量', null=False, blank=False)
+    Photovoltaic_power_generation = models.FloatField(verbose_name='地区当年光伏发电量', null=False, blank=False)
+    Primary_school_number = models.FloatField(verbose_name='小学人数', null=False, blank=False)
+    Number_of_junior_high_school = models.FloatField(verbose_name='初中人数', null=False, blank=False)
+    High_school_number = models.FloatField(verbose_name='高中人数', null=False, blank=False)
+    University_and_above = models.FloatField(verbose_name='大学及以上人数', null=False, blank=False)
+
+
+
     class Meta:
         ordering = '-year', 'area' ,'province'
-        verbose_name = '地区年度资源消耗量'
+        verbose_name = '地区年度原始数据'
         verbose_name_plural = verbose_name
         unique_together = [('province', 'area', 'year')]
 
@@ -136,6 +160,20 @@ class Calculated_value(models.Model):
     CO2_Emission_b = models.FloatField(verbose_name='二氧化碳排放量_年度计算值', null=True, blank=True)
     Total_CO2_Emission = models.FloatField(verbose_name='二氧化碳排放总量_年度计算值', null=True, blank=True)
     Cal_EF = models.FloatField(verbose_name='生态足迹_年度计算值', null=True, blank=True)
+
+    # 基础指标
+    per_unit_gdp = models.FloatField(verbose_name='单位GDP能耗', null=True, blank=True)
+    co2_per_gdp = models.FloatField(verbose_name='单位GDP二氧化碳排放量', null=True, blank=True)
+    water_per_gdp = models.FloatField(verbose_name='单位GDP用水量', null=True, blank=True)
+    planting_area = models.FloatField(verbose_name='播种面积占比', null=True, blank=True)
+    edu_years = models.FloatField(verbose_name='平均受教育年限', null=True, blank=True)
+    ef_per = models.FloatField(verbose_name='人均生态足迹', null=True, blank=True)
+    water_per = models.FloatField(verbose_name='人均用水量', null=True, blank=True)
+    pension_cov = models.FloatField(verbose_name='养老保险覆盖率', null=True, blank=True)
+    medical_cov = models.FloatField(verbose_name='医疗保险覆盖率', null=True, blank=True)
+    unemployment_cov = models.FloatField(verbose_name='失业保险覆盖率', null=True, blank=True)
+    renewable_energy_per = models.FloatField(verbose_name='可再生能源供给占比(省)', null=True, blank=True)
+
 
     class Meta:
         ordering = '-year', 'area', 'province'
@@ -183,9 +221,31 @@ class Prov_Annual_data(models.Model):
     Consume_Fishing_ground = models.FloatField(verbose_name='渔场消耗量')
     Consume_Construction_land = models.FloatField(verbose_name='建设用地消耗量')
 
+    # 年度国民经济数据
+    GDP = models.FloatField(verbose_name='地区当年生产总值', null=False, blank=False)
+    Sown_area = models.FloatField(verbose_name='地区当年播种面积', null=False, blank=False)
+    Total_population = models.FloatField(verbose_name='地区当年总人口', null=False, blank=False)
+    Total_power_generation = models.FloatField(verbose_name='地区当年总发电量', null=False, blank=False)
+    Total_energy_consumption = models.FloatField(verbose_name='地区当年能源消费总量', null=False, blank=False)
+    Carbon_dioxide_emissions = models.FloatField(verbose_name='地区当年二氧化碳排放量', null=False, blank=False)
+    Total_water_consumption = models.FloatField(verbose_name='地区当年用水总量', null=False, blank=False)
+    The_total_area = models.FloatField(verbose_name='地区当年总面积', null=False, blank=False)
+    Ecological_footprint = models.FloatField(verbose_name='地区当年生态足迹', null=False, blank=False)
+    Number_of_employees_in_basic_pension_insurance = models.FloatField(verbose_name='地区当年基本养老保险职工人数', null=False, blank=False)
+    Number_of_basic_medical_insurance = models.FloatField(verbose_name='地区当年基本医疗保险人数', null=False, blank=False)
+    Number_of_unemployment_insurance = models.FloatField(verbose_name='地区当年失业保险人数', null=False, blank=False)
+    Nuclear_power_generation = models.FloatField(verbose_name='地区当年核电发电量', null=False, blank=False)
+    Wind_power_generation = models.FloatField(verbose_name='地区当年风电发电量', null=False, blank=False)
+    Hydropower_generation = models.FloatField(verbose_name='地区当年水电发电量', null=False, blank=False)
+    Photovoltaic_power_generation = models.FloatField(verbose_name='地区当年光伏发电量', null=False, blank=False)
+    Primary_school_number = models.FloatField(verbose_name='小学人数', null=False, blank=False)
+    Number_of_junior_high_school = models.FloatField(verbose_name='初中人数', null=False, blank=False)
+    High_school_number = models.FloatField(verbose_name='高中人数', null=False, blank=False)
+    University_and_above = models.FloatField(verbose_name='大学及以上人数', null=False, blank=False)
+
     class Meta:
         ordering = '-year', 'province'
-        verbose_name = '省级年度资源消耗量'
+        verbose_name = '省级年度原始数据'
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -223,6 +283,19 @@ class Prov_Calculated_value(models.Model):
     CO2_Emission_b = models.FloatField(verbose_name='二氧化碳排放量_年度计算值', null=True, blank=True)
     Total_CO2_Emission = models.FloatField(verbose_name='二氧化碳排放总量_年度计算值', null=True, blank=True)
     Cal_EF = models.FloatField(verbose_name='生态足迹_年度计算值', null=True, blank=True)
+
+    # 基础指标
+    per_unit_gdp = models.FloatField(verbose_name='单位GDP能耗', null=True, blank=True)
+    co2_per_gdp = models.FloatField(verbose_name='单位GDP二氧化碳排放量', null=True, blank=True)
+    water_per_gdp = models.FloatField(verbose_name='单位GDP用水量', null=True, blank=True)
+    planting_area = models.FloatField(verbose_name='播种面积占比', null=True, blank=True)
+    edu_years = models.FloatField(verbose_name='平均受教育年限', null=True, blank=True)
+    ef_per = models.FloatField(verbose_name='人均生态足迹', null=True, blank=True)
+    water_per = models.FloatField(verbose_name='人均用水量', null=True, blank=True)
+    pension_cov = models.FloatField(verbose_name='养老保险覆盖率', null=True, blank=True)
+    medical_cov = models.FloatField(verbose_name='医疗保险覆盖率', null=True, blank=True)
+    unemployment_cov = models.FloatField(verbose_name='失业保险覆盖率', null=True, blank=True)
+    renewable_energy_per = models.FloatField(verbose_name='可再生能源供给占比(省)', null=True, blank=True)
 
     class Meta:
         ordering = '-year', 'province'
