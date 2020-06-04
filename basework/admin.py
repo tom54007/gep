@@ -68,6 +68,7 @@ class Annual_dataAdmin(admin.ModelAdmin):
         con = ConstantEg.objects.all()
         # for d in queryset:
         d = queryset[0]
+        # 能源类碳排放计算
         t0=(d.Consume_Raw_coal*con[0].Raw_coal*con[0].Raw_coal_MJ)/(10**8)
         t1=(d.Consume_Clean_coal*con[0].Clean_coal*con[0].Clean_coal_MJ)/(10**8)
         t2=(d.Consume_Coke*con[0].Coke*con[0].Coke_MJ)/(10**8)
@@ -85,10 +86,23 @@ class Annual_dataAdmin(admin.ModelAdmin):
         t14=(d.Consume_Lubricating_oil*con[0].Lubricating_oil*con[0].Lubricating_oil_MJ)/(10**8)
         t15=(d.Consume_Petroleum_coke*con[0].Petroleum_coke*con[0].Petroleum_coke_MJ)/(10**8)
         t16=(d.Consume_Natural_gas*con[0].Natural_gas*con[0].Natural_gas_MJ)/(10**7)
-        
-        temp = [t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16]
-        ghgsum = sum(temp)
-        self.message_user(request, ghgsum)
+        eg_l = [t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16]
+        ## 温室气体排放量 GHG Emission 
+        eg_l_sum = sum(eg_l)*10
+        ## 二氧化碳排放量 CO2 Emission
+        eg_l_co2 = eg_l_sum*44/12
+        # 工业生产过程碳排放
+        t17=(d.Consume_Cement*con[0].Cement)/100000
+        t18=(d.Consume_Steel*con[0].Steel)/100000
+        indus_l = [t17, t18]
+        ## 温室气体排放量 GHG Emission
+        indus_l_sum = sum(indus_l)*10
+        ## 二氧化碳排放量 CO2 Emission
+        indus_l_co2 = indus_l_sum*44/12
+        # 二氧化碳排放总量 Total CO2 Emission
+        total_co2 = eg_l_co2 + indus_l_co2
+
+        self.message_user(request, total_co2)
         # 设置提示信息
         self.message_user(request, '数据计算成功！')
 
