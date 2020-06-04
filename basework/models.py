@@ -1,5 +1,6 @@
 from django.db import models
 from work.models import can_not_equal_zero
+# from .caldata import *
 
 # Create your models here.
 
@@ -53,7 +54,7 @@ class ConstantEg(models.Model):
     Natural_gas_MJ = models.FloatField(verbose_name='天然气热值', null=False, blank=False, validators=[can_not_equal_zero])
 
     class Meta:
-        verbose_name = "能源常量"
+        verbose_name = '能源常量'
 
 
 # 地区数据

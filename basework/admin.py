@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import ConstantEg, Annual_data, Prov_Annual_data, Calculated_value, Prov_Calculated_value
+from .caldata import *
 
 
 # Register your models here.
@@ -46,7 +47,55 @@ class Annual_dataAdmin(admin.ModelAdmin):
             )
         }),
     )
+    # 数据批量操作
+    def get_datas(self, request, queryset):
+        # temp = []
+        # for d in queryset:
+        #     t = [d.job, d.title, str(d.payment), d.person.name]
+        #     temp.append(t)
+        # f = open('d://data.txt', 'a')
+        # for t in temp:
+        #     f.write(','.join(t) + '\r\n')
+        # f.close()
+        # 设置提示信息
+        self.message_user(request, '数据导出成功')
 
+    # 设置函数的显示名称
+    get_datas.short_description = '导出所选数据'
+    
+    def calculate_datas(self, request, queryset):
+        temp = []
+        con = ConstantEg.objects.all()
+        # for d in queryset:
+        d = queryset[0]
+        t0=(d.Consume_Raw_coal*con[0].Raw_coal*con[0].Raw_coal_MJ)/(10**8)
+        t1=(d.Consume_Clean_coal*con[0].Clean_coal*con[0].Clean_coal_MJ)/(10**8)
+        t2=(d.Consume_Coke*con[0].Coke*con[0].Coke_MJ)/(10**8)
+        t3=(d.Consume_Briquette*con[0].Briquette*con[0].Briquette_MJ)/(10**8)
+        t4=(d.Consume_Other_coking_products*con[0].Other_coking_products*con[0].Other_coking_products_MJ)/(10**8)
+        t5=(d.Consume_Crude*con[0].Crude*con[0].Crude_MJ)/(10**8)
+        t6=(d.Consume_Fuel_oil*con[0].Fuel_oil*con[0].Fuel_oil_MJ)/(10**8)
+        t7=(d.Consume_Gasoline*con[0].Gasoline*con[0].Gasoline_MJ)/(10**8)
+        t8=(d.Consume_Diesel*con[0].Diesel*con[0].Diesel_MJ)/(10**8)
+        t9=(d.Consume_Kerosene*con[0].Kerosene*con[0].Kerosene_MJ)/(10**8)
+        t10=(d.Consume_Liquefied_petroleum_gas*con[0].Liquefied_petroleum_gas*con[0].Liquefied_petroleum_gas_MJ)/(10**8)
+        t11=(d.Consume_Refinery_dry_gas*con[0].Refinery_dry_gas*con[0].Refinery_dry_gas_MJ)/(10**8)
+        t12=(d.Consume_Naphtha*con[0].Naphtha*con[0].Naphtha_MJ)/(10**8)
+        t13=(d.Consume_Asphalt*con[0].Asphalt*con[0].Asphalt_MJ)/(10**8)
+        t14=(d.Consume_Lubricating_oil*con[0].Lubricating_oil*con[0].Lubricating_oil_MJ)/(10**8)
+        t15=(d.Consume_Petroleum_coke*con[0].Petroleum_coke*con[0].Petroleum_coke_MJ)/(10**8)
+        t16=(d.Consume_Natural_gas*con[0].Natural_gas*con[0].Natural_gas_MJ)/(10**7)
+        
+        temp = [t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16]
+        ghgsum = sum(temp)
+        self.message_user(request, ghgsum)
+        # 设置提示信息
+        self.message_user(request, '数据计算成功！')
+
+    # 设置函数的显示名称
+    calculate_datas.short_description = '数据计算'
+    # 添加到“动作”栏
+    actions = ['calculate_datas', 'get_datas']
 
 class Prov_Annual_dataAdmin(admin.ModelAdmin):
     list_display = ('province', 'year')
@@ -67,6 +116,40 @@ class Prov_Annual_dataAdmin(admin.ModelAdmin):
             )
         }),
     )
+
+    # 数据批量操作
+    def get_datas(self, request, queryset):
+        # temp = []
+        # for d in queryset:
+        #     t = [d.job, d.title, str(d.payment), d.person.name]
+        #     temp.append(t)
+        # f = open('d://data.txt', 'a')
+        # for t in temp:
+        #     f.write(','.join(t) + '\r\n')
+        # f.close()
+        # 设置提示信息
+        self.message_user(request, '数据导出成功！')
+
+    # 设置函数的显示名称
+    get_datas.short_description = '导出所选数据'
+    
+    def calculate_datas(self, request, queryset):
+        # temp = []
+        # for d in queryset:
+        #     t = [d.job, d.title, str(d.payment), d.person.name]
+        #     temp.append(t)
+        # f = open('d://data.txt', 'a')
+        # for t in temp:
+        #     f.write(','.join(t) + '\r\n')
+        # f.close()
+        # 设置提示信息
+        self.message_user(request, '数据计算成功！')
+
+    # 设置函数的显示名称
+    calculate_datas.short_description = '数据计算'
+    # 添加到“动作”栏
+    actions = ['calculate_datas', 'get_datas']
+
 
 class Calculated_valueAdmin(admin.ModelAdmin):
     list_display = ('province', 'area', 'year')
@@ -96,6 +179,7 @@ class Calculated_valueAdmin(admin.ModelAdmin):
             )
         }),
     )
+
 
 class Prov_Calculated_valueAdmin(admin.ModelAdmin):
     list_display = ('province', 'year')
@@ -128,7 +212,9 @@ class Prov_Calculated_valueAdmin(admin.ModelAdmin):
 
 
 
+
 admin.site.register(ConstantEg, ConstantEgAdmin)
 admin.site.register(Annual_data, Annual_dataAdmin)
 admin.site.register(Prov_Annual_data, Prov_Annual_dataAdmin)
 admin.site.register(Calculated_value, Calculated_valueAdmin)
+admin.site.register(Prov_Calculated_value, Prov_Calculated_valueAdmin)
