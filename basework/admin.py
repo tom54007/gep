@@ -30,6 +30,8 @@ class ConstantEgAdmin(admin.ModelAdmin):
     )
 
 class Annual_dataAdmin(admin.ModelAdmin):
+    search_fields=['area', 'year', 'province']
+    list_filter=['province', 'area', 'year']
     list_display = ('province', 'area', 'year')
     fieldsets = (('地区年度数据', {
             'fields': (
@@ -182,6 +184,8 @@ class Annual_dataAdmin(admin.ModelAdmin):
     actions = ['calculate_datas', 'get_datas']
 
 class Prov_Annual_dataAdmin(admin.ModelAdmin):
+    search_fields=['year', 'province']
+    list_filter=['province', 'year']
     list_display = ('province', 'year')
     fieldsets = (('省级年度数据', {
             'fields': (
@@ -335,6 +339,8 @@ class Prov_Annual_dataAdmin(admin.ModelAdmin):
 
 
 class Calculated_valueAdmin(admin.ModelAdmin):
+    search_fields=['area', 'year', 'province']
+    list_filter=['province', 'area', 'year']
     list_display = ('province', 'area', 'year')
     fieldsets = (('地区年度数据计算', {
             'fields': (
@@ -368,6 +374,8 @@ class Calculated_valueAdmin(admin.ModelAdmin):
 
 
 class Prov_Calculated_valueAdmin(admin.ModelAdmin):
+    search_fields=['year', 'province']
+    list_filter=['province', 'year']
     list_display = ('province', 'year')
     fieldsets = (('省级年度数据计算', {
             'fields': (
