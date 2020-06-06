@@ -304,3 +304,16 @@ class Prov_Calculated_value(models.Model):
 
     def __str__(self):
         return f'{self.province},{self.year}'
+
+
+# 文件上传
+class ImportFile_excel(models.Model):
+    excelfile = models.FileField(verbose_name='上传', upload_to='data/')
+    name = models.CharField(verbose_name='文件名', max_length=50)
+
+    class Meta:
+        verbose_name = '数据导入'
+    def __str__(self):
+        return self.name
+
+

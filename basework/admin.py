@@ -167,9 +167,9 @@ class Annual_dataAdmin(admin.ModelAdmin):
             ## 不存在，创建数据
             all_base_data = dict(province=d.province, area=d.area, year=d.year,Cal_Raw_coal=t0,Cal_Clean_coal=t1,Cal_Coke=t2,Cal_Briquette=t3,Cal_Other_coking_products=t4,Cal_Crude=t5,Cal_Fuel_oil=t6,Cal_Gasoline=t7,Cal_Diesel=t8,Cal_Kerosene=t9,Cal_Liquefied_petroleum_gas=t10,Cal_Refinery_dry_gas=t11,Cal_Naphtha=t12,Cal_Asphalt=t13,Cal_Lubricating_oil=t14,Cal_Petroleum_coke=t15,Cal_Natural_gas=t16,GHG_Emission_a=eg_l_sum,CO2_Emission_a=eg_l_co2,Cal_Cement=t17,Cal_Steel=t18,GHG_Emission_b=indus_l_sum,CO2_Emission_b=indus_l_co2,Total_CO2_Emission=total_co2,Cal_EF=ef_l_sum,per_unit_gdp=per_unit_gdp,co2_per_gdp=co2_per_gdp,water_per_gdp=water_per_gdp,planting_area=planting_area,edu_years=edu_years,ef_per=ef_per,water_per=water_per,pension_cov=pension_cov,medical_cov=medical_cov,unemployment_cov=unemployment_cov,renewable_energy_per=renewable_energy_per)
             if b_area is None:
-                b_area = Calculated_value.objects.create(**all_base_data)
+                b_area.update_or_create(**all_base_data)
             else:
-                b_area = Calculated_value.objects.filter(province=d.province, area=d.area, year=d.year).update_or_create(**all_base_data)
+                b_area.update(**all_base_data)
             ## 保存更改
 
             # 设置提示信息
@@ -314,14 +314,14 @@ class Prov_Annual_dataAdmin(admin.ModelAdmin):
             # 写入数据表
             ## 判断该条记录是否已经存在
             # w_area = CityDataRecordResource.objects.filter(area=d.area, year=d.year)
-            b_area = Prov_Calculated_value.objects.filter(province=d.province, year=d.year)
+            b_prov = Prov_Calculated_value.objects.filter(province=d.province, year=d.year)
             ## 已存在，更新数据
             ## 不存在，创建数据
             all_base_data = dict(province=d.province, year=d.year,Cal_Raw_coal=t0,Cal_Clean_coal=t1,Cal_Coke=t2,Cal_Briquette=t3,Cal_Other_coking_products=t4,Cal_Crude=t5,Cal_Fuel_oil=t6,Cal_Gasoline=t7,Cal_Diesel=t8,Cal_Kerosene=t9,Cal_Liquefied_petroleum_gas=t10,Cal_Refinery_dry_gas=t11,Cal_Naphtha=t12,Cal_Asphalt=t13,Cal_Lubricating_oil=t14,Cal_Petroleum_coke=t15,Cal_Natural_gas=t16,GHG_Emission_a=eg_l_sum,CO2_Emission_a=eg_l_co2,Cal_Cement=t17,Cal_Steel=t18,GHG_Emission_b=indus_l_sum,CO2_Emission_b=indus_l_co2,Total_CO2_Emission=total_co2,Cal_EF=ef_l_sum,per_unit_gdp=per_unit_gdp,co2_per_gdp=co2_per_gdp,water_per_gdp=water_per_gdp,planting_area=planting_area,edu_years=edu_years,ef_per=ef_per,water_per=water_per,pension_cov=pension_cov,medical_cov=medical_cov,unemployment_cov=unemployment_cov,renewable_energy_per=renewable_energy_per)
-            if b_area is None:
-                b_area = Prov_Calculated_value.objects.create(**all_base_data)
+            if b_prov is None:
+                b_prov.update_or_create(**all_base_data)
             else:
-                b_area = Prov_Calculated_value.objects.filter(province=d.province, year=d.year).update_or_create(**all_base_data)
+                b_prov.update(**all_base_data)
             ## 保存更改
 
             # 设置提示信息
