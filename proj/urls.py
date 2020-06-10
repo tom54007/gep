@@ -20,20 +20,16 @@ from django.views.static import serve
 from ckeditor_uploader import views as ckeditor_uploader_views
 from django.views.decorators.cache import never_cache
 from django.conf import settings
-from work import views
-
 
 
 urlpatterns = [
-    path('', views.index),
-    path('admin/work', include('work.urls'),  name='work'),
+    path('', include('work.urls'), name='work'),
     path('admin/', admin.site.urls),
 
     path('ckeditor/upload/', ckeditor_uploader_views.upload, name='ckeditor_upload'),
     path('ckeditor/browse/', never_cache(ckeditor_uploader_views.browse), name='ckeditor_browse'),
 
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
-    path('admin/basework', include('basework.urls'), name='basework'),
 
 ]
 
