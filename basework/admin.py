@@ -145,10 +145,13 @@ class Annual_dataAdmin(admin.ModelAdmin):
             co2_per_gdp = total_co2/d.GDP
             # 单位GDP用水量	地区当年用水总量/地区当年生产总值
             water_per_gdp = d.Total_water_consumption/d.GDP
-            # 播种面积占比	地区当年总面积/地区当年播种面积
-            planting_area = d.The_total_area/d.Sown_area
-            # 平均受教育年限	（小学人数×6+初中人数×9年+高中人数×12+大学及以上人数×16）/43
-            edu_years = (d.Primary_school_number*6 + d.Number_of_junior_high_school*9 + d.High_school_number*12 + d.University_and_above*16)/43
+            # 播种面积占比	地区当年播种面积/地区当年总面积
+            planting_area = d.Sown_area/d.The_total_area
+            # 平均受教育年限	（小学人数×6+初中人数×9+高中人数×12+大学及以上人数×16）/43
+            #edu_years = (d.Primary_school_number*6 + d.Number_of_junior_high_school*9 + d.High_school_number*12 + d.University_and_above*16)/43
+            # 平均受教育年限 （小学人数×6+初中人数×9年+高中人数×12+大学及以上人数×16）/（小学人数+初中人数+高中人数+大学及以上人数）
+            educated_population = d.Primary_school_number + d.Number_of_junior_high_school + d.High_school_number + d.University_and_above
+            edu_years = (d.Primary_school_number*6 + d.Number_of_junior_high_school*9 + d.High_school_number*12 + d.University_and_above*16)/educated_population
             # 人均生态足迹	地区当年生态足迹/地区当年总人口
             ef_per = ef_l_sum/d.Total_population
             # 人均用水量	地区当年用水总量/地区当年总人口
@@ -168,14 +171,15 @@ class Annual_dataAdmin(admin.ModelAdmin):
             ## 已存在，更新数据
             ## 不存在，创建数据
             all_base_data = dict(province=d.province, area=d.area, year=d.year,Cal_Raw_coal=t0,Cal_Clean_coal=t1,Cal_Coke=t2,Cal_Briquette=t3,Cal_Other_coking_products=t4,Cal_Crude=t5,Cal_Fuel_oil=t6,Cal_Gasoline=t7,Cal_Diesel=t8,Cal_Kerosene=t9,Cal_Liquefied_petroleum_gas=t10,Cal_Refinery_dry_gas=t11,Cal_Naphtha=t12,Cal_Asphalt=t13,Cal_Lubricating_oil=t14,Cal_Petroleum_coke=t15,Cal_Natural_gas=t16,GHG_Emission_a=eg_l_sum,CO2_Emission_a=eg_l_co2,Cal_Cement=t17,Cal_Steel=t18,GHG_Emission_b=indus_l_sum,CO2_Emission_b=indus_l_co2,Total_CO2_Emission=total_co2,Cal_EF=ef_l_sum,per_unit_gdp=per_unit_gdp,co2_per_gdp=co2_per_gdp,water_per_gdp=water_per_gdp,planting_area=planting_area,edu_years=edu_years,ef_per=ef_per,water_per=water_per,pension_cov=pension_cov,medical_cov=medical_cov,unemployment_cov=unemployment_cov,renewable_energy_per=renewable_energy_per)
-            if b_area is None:
-                b_area.update_or_create(**all_base_data)
+            if len(b_area)==0:
+                b_area.create(**all_base_data)
             else:
                 b_area.update(**all_base_data)
             ## 保存更改
+            info_return = str(len(b_area))
 
             # 设置提示信息
-            self.message_user(request, '数据计算成功！')
+            self.message_user(request, '数据计算成功')
 
 
     # 设置函数的显示名称
@@ -322,7 +326,7 @@ class Prov_Annual_dataAdmin(admin.ModelAdmin):
             ## 已存在，更新数据
             ## 不存在，创建数据
             all_base_data = dict(province=d.province, year=d.year,Cal_Raw_coal=t0,Cal_Clean_coal=t1,Cal_Coke=t2,Cal_Briquette=t3,Cal_Other_coking_products=t4,Cal_Crude=t5,Cal_Fuel_oil=t6,Cal_Gasoline=t7,Cal_Diesel=t8,Cal_Kerosene=t9,Cal_Liquefied_petroleum_gas=t10,Cal_Refinery_dry_gas=t11,Cal_Naphtha=t12,Cal_Asphalt=t13,Cal_Lubricating_oil=t14,Cal_Petroleum_coke=t15,Cal_Natural_gas=t16,GHG_Emission_a=eg_l_sum,CO2_Emission_a=eg_l_co2,Cal_Cement=t17,Cal_Steel=t18,GHG_Emission_b=indus_l_sum,CO2_Emission_b=indus_l_co2,Total_CO2_Emission=total_co2,Cal_EF=ef_l_sum,per_unit_gdp=per_unit_gdp,co2_per_gdp=co2_per_gdp,water_per_gdp=water_per_gdp,planting_area=planting_area,edu_years=edu_years,ef_per=ef_per,water_per=water_per,pension_cov=pension_cov,medical_cov=medical_cov,unemployment_cov=unemployment_cov,renewable_energy_per=renewable_energy_per)
-            if b_prov is None:
+            if len(b_prov)==0:
                 b_prov.update_or_create(**all_base_data)
             else:
                 b_prov.update(**all_base_data)

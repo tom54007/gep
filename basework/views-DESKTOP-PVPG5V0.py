@@ -8,8 +8,5 @@ from . import models
 # Create your views here.
 
 def importExcel(request):
-    context = {
-        'test': "数据导入"
-    }
-    return render(request, 'admin/basework/change_list_object_tools.html', context)
+    return HttpResponse('test')
 

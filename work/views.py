@@ -7,7 +7,7 @@ from . import tasks
 
 
 def index(request):
-    return redirect('/admin')
+    return render(request,'index.html')
 
 
 def province_year_simple(request, province_name, year):

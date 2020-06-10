@@ -33,7 +33,7 @@ urlpatterns = [
     path('ckeditor/browse/', never_cache(ckeditor_uploader_views.browse), name='ckeditor_browse'),
 
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
-    path('admin/basework', include('basework.urls'), name='basework'),
+    path('basework/', include(('basework.urls', 'basework'), namespace='basework')),
 
 ]
 
