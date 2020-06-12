@@ -1,29 +1,17 @@
-from openpyxl import Workbook,load_workbook
-from openpyxl.utils import get_column_letter
-from .models import Annual_data, Prov_Annual_data
-from openpyxl.compat import range
+from .models import Annual_data, Prov_Annual_data, ImportFile_excel
 
-def import_user(self, request, obj, change):
+import pandas as pd
+from pandas import DataFrame
 
-    wb = load_workbook(filename=obj.YDUserFile.path)
-    ws = wb.get_sheet_names()
-    ws = wb.get_sheet_by_name(ws[0])
-    headers = ['version', 'attr', 'value', 'addr']
-    lists = []
-    users = request.user
-    for row in range(2, 5):
-        r = {}
-        for col in range(1, len(headers) + 1):
-            key = headers[col - 1]
-            r[key] = ws.cell(row=row, column=col).value
-        lists.append(r)
-    sqllist = []
-    for cell in lists:
-        # for header in headers:
-        revision = cell['version']
-        prop = cell['attr']
-        value = cell['value']
-        repo = cell['addr']
-        sql = KNSVNHistory(revision=revision, prop=prop, value=value, repo=repo, editor=users)
-        sqllist.append(sql)
-    KNSVNHistory.objects.bulk_create(sqllist)
+# 定义数据表读取解析函数
+def takedata(filename, arealevel, province, year):
+    df = pd.read_excel('市级2017原始数据测试.xlsx', sheet_name="二氧化碳和生态足迹的数据", header=[0,1])
+    df = df.set_index(df.columns[0])
+    df = df.stack(level=0).stack(level=0).reset_index()
+    df.columns = list(df.columns[1:].insert(0, 'Resources'))
+    this_year = df[df['level_2']=='当期值']
+    k = this_year[this_year['level_1']=='南京'][this_year['Resources']=='型煤']
+    if len(k)==0:
+        print('none')
+    else:
+        print('有')

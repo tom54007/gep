@@ -1,5 +1,5 @@
 from django.db import models
-from work.models import can_not_equal_zero
+from work.models import can_not_equal_zero, Province
 # from .caldata import *
 
 # Create your models here.
@@ -308,6 +308,9 @@ class Prov_Calculated_value(models.Model):
 
 # 文件上传
 class ImportFile_excel(models.Model):
+    arealevel = models.CharField(verbose_name='数据级别', max_length=50, choices=(('area', '市级'), ('province', '省级')))
+    province = models.ForeignKey(to=Province, null=False, blank=False, on_delete=models.CASCADE,verbose_name='省份')
+    year = models.IntegerField(verbose_name='年度', null=False, blank=False)
     excelfile = models.FileField(verbose_name='上传', upload_to='data/')
     name = models.CharField(verbose_name='文件名', max_length=50)
 

@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .models import ConstantEg, Annual_data, Prov_Annual_data, Calculated_value, Prov_Calculated_value
+from .models import ConstantEg, Annual_data, Prov_Annual_data, Calculated_value, Prov_Calculated_value, ImportFile_excel
 from .caldata import *
-from work.models import CityDataRecord, ProvinceDataRecord
+from work.models import CityDataRecord, ProvinceDataRecord, Province
 
 
 # Register your models here.
@@ -411,7 +411,8 @@ class Prov_Calculated_valueAdmin(admin.ModelAdmin):
         }),
     )
 
-
+class ImportFile_excelAdmin(admin.ModelAdmin):
+    list_display = ('arealevel', 'province', 'year', 'excelfile', 'name')
 
 
 admin.site.register(ConstantEg, ConstantEgAdmin)
@@ -419,3 +420,4 @@ admin.site.register(Annual_data, Annual_dataAdmin)
 admin.site.register(Prov_Annual_data, Prov_Annual_dataAdmin)
 admin.site.register(Calculated_value, Calculated_valueAdmin)
 admin.site.register(Prov_Calculated_value, Prov_Calculated_valueAdmin)
+admin.site.register(ImportFile_excel, ImportFile_excelAdmin)
