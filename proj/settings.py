@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
 
     'import_export',
-    # 'simpleui',
+    'simpleui',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',

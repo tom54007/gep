@@ -1,5 +1,6 @@
 from django.db import models
 from work.models import can_not_equal_zero, Province
+import django.utils.timezone as timezone
 # from .caldata import *
 
 # Create your models here.
@@ -311,12 +312,16 @@ class ImportFile_excel(models.Model):
     arealevel = models.CharField(verbose_name='数据级别', max_length=50, choices=(('area', '市级'), ('province', '省级')))
     province = models.ForeignKey(to=Province, null=False, blank=False, on_delete=models.CASCADE,verbose_name='省份')
     year = models.IntegerField(verbose_name='年度', null=False, blank=False)
-    excelfile = models.FileField(verbose_name='上传', upload_to='data/')
-    name = models.CharField(verbose_name='文件名', max_length=50)
+    excelfile = models.FileField(verbose_name='上传', upload_to='data/%Y-%m-%d')
+    add_date = models.DateTimeField(verbose_name='上传日期', auto_now=True)
 
     class Meta:
         verbose_name = '数据导入'
     def __str__(self):
-        return self.name
+        if self.arealevel == 'area':
+            k = '市级'
+        else:
+            k = '省级'
+        return '%s, %s, %s' % (self.province, k, self.year)
 
 

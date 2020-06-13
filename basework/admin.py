@@ -412,7 +412,17 @@ class Prov_Calculated_valueAdmin(admin.ModelAdmin):
     )
 
 class ImportFile_excelAdmin(admin.ModelAdmin):
-    list_display = ('arealevel', 'province', 'year', 'excelfile', 'name')
+    list_display = ('arealevel', 'province', 'year', 'excelfile', 'add_date')
+    def gotfile(self, request, queryset):
+        d = ImportFile_excel.objects.all()
+        self.message_user(request, str(queryset[0].excelfile))
+
+
+    # 设置函数的显示名称
+    gotfile.short_description = '反馈文件名'
+    # 添加到“动作”栏
+    actions = ['gotfile']
+
 
 
 admin.site.register(ConstantEg, ConstantEgAdmin)
