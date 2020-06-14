@@ -3,6 +3,7 @@ from django.contrib import admin
 from .models import ConstantEg, Annual_data, Prov_Annual_data, Calculated_value, Prov_Calculated_value, ImportFile_excel
 from .caldata import *
 from work.models import CityDataRecord, ProvinceDataRecord, Province
+from .utils import takedata
 
 
 # Register your models here.
@@ -48,7 +49,7 @@ class Annual_dataAdmin(admin.ModelAdmin):
                     'Consume_Farmland','Consume_Woodland','Consume_Pastureland','Consume_Fishing_ground','Consume_Construction_land',
                 ),
                 (
-                    'GDP','Sown_area','Total_population','Total_power_generation','Total_energy_consumption','Carbon_dioxide_emissions','Total_water_consumption','The_total_area','Ecological_footprint','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Nuclear_power_generation','Wind_power_generation','Hydropower_generation','Photovoltaic_power_generation','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
+                    'GDP','Sown_area','Total_population','Total_energy_consumption','Carbon_dioxide_emissions','Total_water_consumption','The_total_area','Ecological_footprint','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
                 ),
             )
         }),
@@ -163,14 +164,14 @@ class Annual_dataAdmin(admin.ModelAdmin):
             # 失业保险覆盖率	地区当年失业保险人数/地区当年总人口
             unemployment_cov = d.Number_of_unemployment_insurance/d.Total_population
             # 可再生能源供给占比	地区当年核电+风电+水电+光伏发电量/地区当年总发电量
-            renewable_energy_per = (d.Nuclear_power_generation + d.Wind_power_generation + d.Hydropower_generation + d.Photovoltaic_power_generation)/d.Total_power_generation
+            # renewable_energy_per = (d.Nuclear_power_generation + d.Wind_power_generation + d.Hydropower_generation + d.Photovoltaic_power_generation)/d.Total_power_generation
             # 写入数据表
             ## 判断该条记录是否已经存在
             # w_area = CityDataRecordResource.objects.filter(area=d.area, year=d.year)
             b_area = Calculated_value.objects.filter(province=d.province, area=d.area, year=d.year)
             ## 已存在，更新数据
             ## 不存在，创建数据
-            all_base_data = dict(province=d.province, area=d.area, year=d.year,Cal_Raw_coal=t0,Cal_Clean_coal=t1,Cal_Coke=t2,Cal_Briquette=t3,Cal_Other_coking_products=t4,Cal_Crude=t5,Cal_Fuel_oil=t6,Cal_Gasoline=t7,Cal_Diesel=t8,Cal_Kerosene=t9,Cal_Liquefied_petroleum_gas=t10,Cal_Refinery_dry_gas=t11,Cal_Naphtha=t12,Cal_Asphalt=t13,Cal_Lubricating_oil=t14,Cal_Petroleum_coke=t15,Cal_Natural_gas=t16,GHG_Emission_a=eg_l_sum,CO2_Emission_a=eg_l_co2,Cal_Cement=t17,Cal_Steel=t18,GHG_Emission_b=indus_l_sum,CO2_Emission_b=indus_l_co2,Total_CO2_Emission=total_co2,Cal_EF=ef_l_sum,per_unit_gdp=per_unit_gdp,co2_per_gdp=co2_per_gdp,water_per_gdp=water_per_gdp,planting_area=planting_area,edu_years=edu_years,ef_per=ef_per,water_per=water_per,pension_cov=pension_cov,medical_cov=medical_cov,unemployment_cov=unemployment_cov,renewable_energy_per=renewable_energy_per)
+            all_base_data = dict(province=d.province, area=d.area, year=d.year,Cal_Raw_coal=t0,Cal_Clean_coal=t1,Cal_Coke=t2,Cal_Briquette=t3,Cal_Other_coking_products=t4,Cal_Crude=t5,Cal_Fuel_oil=t6,Cal_Gasoline=t7,Cal_Diesel=t8,Cal_Kerosene=t9,Cal_Liquefied_petroleum_gas=t10,Cal_Refinery_dry_gas=t11,Cal_Naphtha=t12,Cal_Asphalt=t13,Cal_Lubricating_oil=t14,Cal_Petroleum_coke=t15,Cal_Natural_gas=t16,GHG_Emission_a=eg_l_sum,CO2_Emission_a=eg_l_co2,Cal_Cement=t17,Cal_Steel=t18,GHG_Emission_b=indus_l_sum,CO2_Emission_b=indus_l_co2,Total_CO2_Emission=total_co2,Cal_EF=ef_l_sum,per_unit_gdp=per_unit_gdp,co2_per_gdp=co2_per_gdp,water_per_gdp=water_per_gdp,planting_area=planting_area,edu_years=edu_years,ef_per=ef_per,water_per=water_per,pension_cov=pension_cov,medical_cov=medical_cov,unemployment_cov=unemployment_cov)
             if len(b_area)==0:
                 b_area.create(**all_base_data)
             else:
@@ -417,7 +418,19 @@ class ImportFile_excelAdmin(admin.ModelAdmin):
         d = ImportFile_excel.objects.all()
         self.message_user(request, str(queryset[0].excelfile))
 
-
+    def save_model(self, request, obj, form, change):
+        self.message_user(request, str(obj.excelfile))
+        # 输出文件路径
+        print(obj.excelfile.path)
+        # 输出数据级别
+        print(obj.arealevel)
+        # 输出省份
+        print(obj.province)
+        # 输出年度
+        print(obj.year)
+        print('*'*30)
+        takedata(obj.excelfile.path, obj.arealevel, obj.province, obj.year)
+        return super().save_model(request, obj, form, change)
     # 设置函数的显示名称
     gotfile.short_description = '反馈文件名'
     # 添加到“动作”栏

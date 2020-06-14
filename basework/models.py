@@ -98,7 +98,7 @@ class Annual_data(models.Model):
     GDP = models.FloatField(verbose_name='地区当年生产总值', null=False, blank=False)
     Sown_area = models.FloatField(verbose_name='地区当年播种面积', null=False, blank=False)
     Total_population = models.FloatField(verbose_name='地区当年总人口', null=False, blank=False)
-    Total_power_generation = models.FloatField(verbose_name='地区当年总发电量', null=False, blank=False)
+    # Total_power_generation = models.FloatField(verbose_name='地区当年总发电量', null=False, blank=False)
     Total_energy_consumption = models.FloatField(verbose_name='地区当年能源消费总量', null=False, blank=False)
     Carbon_dioxide_emissions = models.FloatField(verbose_name='地区当年二氧化碳排放量', null=False, blank=False)
     Total_water_consumption = models.FloatField(verbose_name='地区当年用水总量', null=False, blank=False)
@@ -107,10 +107,10 @@ class Annual_data(models.Model):
     Number_of_employees_in_basic_pension_insurance = models.FloatField(verbose_name='地区当年基本养老保险职工人数', null=False, blank=False)
     Number_of_basic_medical_insurance = models.FloatField(verbose_name='地区当年基本医疗保险人数', null=False, blank=False)
     Number_of_unemployment_insurance = models.FloatField(verbose_name='地区当年失业保险人数', null=False, blank=False)
-    Nuclear_power_generation = models.FloatField(verbose_name='地区当年核电发电量', null=False, blank=False)
-    Wind_power_generation = models.FloatField(verbose_name='地区当年风电发电量', null=False, blank=False)
-    Hydropower_generation = models.FloatField(verbose_name='地区当年水电发电量', null=False, blank=False)
-    Photovoltaic_power_generation = models.FloatField(verbose_name='地区当年光伏发电量', null=False, blank=False)
+    # Nuclear_power_generation = models.FloatField(verbose_name='地区当年核电发电量', null=False, blank=False)
+    # Wind_power_generation = models.FloatField(verbose_name='地区当年风电发电量', null=False, blank=False)
+    # Hydropower_generation = models.FloatField(verbose_name='地区当年水电发电量', null=False, blank=False)
+    # Photovoltaic_power_generation = models.FloatField(verbose_name='地区当年光伏发电量', null=False, blank=False)
     Primary_school_number = models.FloatField(verbose_name='小学人数', null=False, blank=False)
     Number_of_junior_high_school = models.FloatField(verbose_name='初中人数', null=False, blank=False)
     High_school_number = models.FloatField(verbose_name='高中人数', null=False, blank=False)
@@ -173,7 +173,7 @@ class Calculated_value(models.Model):
     pension_cov = models.FloatField(verbose_name='养老保险覆盖率', null=True)
     medical_cov = models.FloatField(verbose_name='医疗保险覆盖率', null=True)
     unemployment_cov = models.FloatField(verbose_name='失业保险覆盖率', null=True)
-    renewable_energy_per = models.FloatField(verbose_name='可再生能源供给占比(省)', null=True)
+    # renewable_energy_per = models.FloatField(verbose_name='可再生能源供给占比(省)', null=True)
 
 
     class Meta:
