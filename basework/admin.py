@@ -49,7 +49,7 @@ class Annual_dataAdmin(admin.ModelAdmin):
                     'Consume_Farmland','Consume_Woodland','Consume_Pastureland','Consume_Fishing_ground','Consume_Construction_land',
                 ),
                 (
-                    'GDP','Sown_area','Total_population','Total_energy_consumption','Carbon_dioxide_emissions','Total_water_consumption','The_total_area','Ecological_footprint','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
+                    'GDP','Sown_area','Total_population','Total_energy_consumption','Carbon_dioxide_emissions','Total_water_consumption','The_total_area','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
                 ),
             )
         }),
@@ -163,8 +163,7 @@ class Annual_dataAdmin(admin.ModelAdmin):
             medical_cov = d.Number_of_basic_medical_insurance/d.Total_population
             # 失业保险覆盖率	地区当年失业保险人数/地区当年总人口
             unemployment_cov = d.Number_of_unemployment_insurance/d.Total_population
-            # 可再生能源供给占比	地区当年核电+风电+水电+光伏发电量/地区当年总发电量
-            # renewable_energy_per = (d.Nuclear_power_generation + d.Wind_power_generation + d.Hydropower_generation + d.Photovoltaic_power_generation)/d.Total_power_generation
+            
             # 写入数据表
             ## 判断该条记录是否已经存在
             # w_area = CityDataRecordResource.objects.filter(area=d.area, year=d.year)
@@ -207,7 +206,7 @@ class Prov_Annual_dataAdmin(admin.ModelAdmin):
                     'Consume_Farmland','Consume_Woodland','Consume_Pastureland','Consume_Fishing_ground','Consume_Construction_land',
                 ),
                 (
-                    'GDP','Sown_area','Total_population','Total_power_generation','Total_energy_consumption','Carbon_dioxide_emissions','Total_water_consumption','The_total_area','Ecological_footprint','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Nuclear_power_generation','Wind_power_generation','Hydropower_generation','Photovoltaic_power_generation','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
+                    'GDP','Sown_area','Total_population','Total_power_generation','Total_energy_consumption','Carbon_dioxide_emissions','Total_water_consumption','The_total_area','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Nuclear_power_generation','Wind_power_generation','Hydropower_generation','Photovoltaic_power_generation','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
                 ),
             )
         }),
@@ -371,7 +370,7 @@ class Calculated_valueAdmin(admin.ModelAdmin):
                     'Cal_EF',
                 ),
                 (
-                    'per_unit_gdp','co2_per_gdp','water_per_gdp','planting_area','edu_years','ef_per','water_per','pension_cov','medical_cov','unemployment_cov','renewable_energy_per',
+                    'per_unit_gdp','co2_per_gdp','water_per_gdp','planting_area','edu_years','ef_per','water_per','pension_cov','medical_cov','unemployment_cov',
                 ),
             )
         }),
