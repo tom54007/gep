@@ -429,6 +429,7 @@ class ImportFile_excelAdmin(admin.ModelAdmin):
         # 输出年度
         print(obj.year)
         print('*'*30)
+        obj.save()
         takedata(obj.excelfile.path, obj.arealevel, obj.province, obj.year)
         return super().save_model(request, obj, form, change)
     # 设置函数的显示名称
