@@ -46,7 +46,26 @@ economic_list_area = [
     ('High_school_number','高中人数'),
     ('University_and_above','大学及以上人数')
 ]
-economic_list_prov = ['地区当年生产总值','地区当年播种面积','地区当年总人口','地区当年总发电量','地区当年能源消费总量','地区当年用水总量','地区当年总面积','地区当年生态足迹','地区当年基本养老保险职工人数','地区当年基本医疗保险人数','地区当年失业保险人数','地区当年核电发电量','地区当年风电发电量','地区当年水电发电量','地区当年光伏发电量','小学人数','初中人数','高中人数','大学及以上人数',]
+economic_list_prov = [
+    ('GDP','地区生产总值'),
+    ('Sown_area','地区播种面积'),
+    ('Total_population','地区总人口'),
+    ('The_total_area','地区总面积'),
+    ('Total_power_generation','地区总发电量'),
+    ('Total_energy_consumption','能源消费总量'),
+    ('Total_water_consumption','用水总量'),
+    ('Number_of_employees_in_basic_pension_insurance','基本养老保险职工人数'),
+    ('Number_of_basic_medical_insurance','基本医疗保险人数'),
+    ('Number_of_unemployment_insurance','失业保险人数'),
+    ('Nuclear_power_generation','核电发电量'),
+    ('Wind_power_generation','风电发电量'),
+    ('Hydropower_generation','水电发电量'),
+    ('Photovoltaic_power_generation','光伏发电量'),
+    ('Primary_school_number','小学人数'),
+    ('Number_of_junior_high_school','初中人数'),
+    ('High_school_number','高中人数'),
+    ('University_and_above','大学及以上人数')
+]
 eg_sheet_name = "二氧化碳和生态足迹的数据"
 economic_sheet_name = "地区相关发展数据"
 
@@ -62,6 +81,7 @@ def takedata(filename, arealevel, province, year):
     df.columns = list(df.columns[1:].insert(0, 'Resources'))
     this_year = df[df['level_2']=='当期值']
     last_year = df[df['level_2']=='前期值']
+    print(this_year)
     # 解析地区相关发展数据的数据表
     df_dev = pd.read_excel(filename, sheet_name=economic_sheet_name, header=[0,1])
     df_dev = df_dev.set_index(df_dev.columns[0])
@@ -69,10 +89,42 @@ def takedata(filename, arealevel, province, year):
     df_dev.columns = list(df_dev.columns[1:].insert(0, 'city'))
     this_year_dev = df_dev[df_dev['level_2']=='当期值']
     last_year_dev = df_dev[df_dev['level_2']=='前期值']
-# 判断数据级别：省级/市级
+    print(this_year_dev)
+    # 判断数据级别：省级/市级
     ## 若为省级，则更新省级数据库数据
     if arealevel == 'province':
-        print('省级数据'+province)
+        get_database = Prov_Annual_data.objects.filter(province=province, year=year)
+        # 加入省份的名称
+        k = this_year
+        k_dev = this_year_dev
+        items = []
+        print(province)
+        print(k)
+        # print(to_database)
+        for m in eg_list:
+            area_eg_each = k[k['Resources']==m[1]]
+            if len(area_eg_each)==0:
+                the_each = 0
+            else:
+                the_each = area_eg_each[0].values[0]
+            print(the_each)
+            items.append([m[0], the_each])
+        for m in economic_list_prov:
+            area_dev_each = k_dev[k_dev['level_1']==m[1]]
+            if len(area_dev_each)==0:
+                the_each = 0
+            else:
+                the_each = area_dev_each[0].values[0]
+            print(the_each)
+            items.append([m[0], the_each])
+        if len(get_database)==0:
+            items.append(['province',province])
+            items.append(['year',year])
+            updatabase = dict(items)
+            Prov_Annual_data.objects.create(**updatabase)
+        else:
+            updatabase = dict(items)
+            Prov_Annual_data.objects.filter(province=province, year=year).update(**updatabase)
     ## 若为市级则通过循环更新对应地区的数据库数据
     elif arealevel == 'area':
         get_area = Area.objects.filter(province__name=province)
