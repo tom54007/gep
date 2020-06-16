@@ -49,7 +49,7 @@ class Annual_dataAdmin(admin.ModelAdmin):
                     'Consume_Farmland','Consume_Woodland','Consume_Pastureland','Consume_Fishing_ground','Consume_Construction_land',
                 ),
                 (
-                    'GDP','Sown_area','Total_population','Total_energy_consumption','Carbon_dioxide_emissions','Total_water_consumption','The_total_area','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
+                    'GDP','Sown_area','Total_population','Total_energy_consumption','Total_water_consumption','The_total_area','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
                 ),
             )
         }),
@@ -206,7 +206,7 @@ class Prov_Annual_dataAdmin(admin.ModelAdmin):
                     'Consume_Farmland','Consume_Woodland','Consume_Pastureland','Consume_Fishing_ground','Consume_Construction_land',
                 ),
                 (
-                    'GDP','Sown_area','Total_population','Total_power_generation','Total_energy_consumption','Carbon_dioxide_emissions','Total_water_consumption','The_total_area','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Nuclear_power_generation','Wind_power_generation','Hydropower_generation','Photovoltaic_power_generation','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
+                    'GDP','Sown_area','Total_population','Total_power_generation','Total_energy_consumption','Total_water_consumption','The_total_area','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Nuclear_power_generation','Wind_power_generation','Hydropower_generation','Photovoltaic_power_generation','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
                 ),
             )
         }),
