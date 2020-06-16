@@ -344,6 +344,7 @@ def do_gather_data(province_name: str, year: int):
     if not province_name:
         raise ValidationError
     province_data_record_of_this_year = models.ProvinceDataRecord.objects.filter(province__name=province_name, year=year).first()
+    print(province_data_record_of_this_year.r_d)
     # if not isinstance(province_data_record_of_this_year, models.ProvinceDataRecord):
     #     return f'{province_name}-{year}的数据不存在'
     province_data_record_of_last_year = models.ProvinceDataRecord.objects.filter(province__name=province_name, year=year-1).first()
@@ -353,7 +354,8 @@ def do_gather_data(province_name: str, year: int):
         city_data_record for city_data_record in models.CityDataRecord.objects.filter(
             area__province__name=province_name, year=year).all()
         ]
-
+    print("***"*30)
+    print(cities_of_this_year[0].r_d)
     cities_of_last_year = [
         city_data_record for city_data_record in models.CityDataRecord.objects.filter(
             area__province__name=province_name, year=year-1).all()
@@ -465,14 +467,14 @@ def new_calc_province_addition(
         weight = province_calc_weight(target=target, last=last, key=k)
         step = __calc_step(last=last, current=current, target=target)
         gep = step * weight
-        print(f'{k}, weight: {weight}, step: {step}, gep: {gep}')
+        # print(f'{k}, weight: {weight}, step: {step}, gep: {gep}')
         data[f'{k}_weight'] = weight
         data[f'{k}_gep'] = gep
 
     for k in province_calc_map:
         v = province_calc_gep(data, k)
         province_data_record.__dict__[k] = v
-        print(k, v)
+        # print(k, v)
 
     province_data_record.save()
 

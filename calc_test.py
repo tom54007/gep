@@ -6,3 +6,4 @@ from work import tasks
 
 
 tasks.do_calc('江苏省', 2018)
+
