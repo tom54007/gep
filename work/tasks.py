@@ -2,6 +2,7 @@ from . import models
 from openpyxl import load_workbook
 import os
 from django.core.exceptions import ValidationError
+from basework.models import Calculated_value, Prov_Calculated_value
 
 
 def parse_excel_and_save(fp: str, data_province_name: str, data_year: int):
@@ -235,7 +236,7 @@ def city_calc_gep(data: dict, key):
 def province_calc_gep(data: dict, key):
     bs = []
     province_find_base(key, bs)
-    print(key, bs)
+    # print(key, bs)
     if not bs:
         raise ValueError
     elif len(bs) == 1:
@@ -344,7 +345,18 @@ def do_gather_data(province_name: str, year: int):
     if not province_name:
         raise ValidationError
     province_data_record_of_this_year = models.ProvinceDataRecord.objects.filter(province__name=province_name, year=year).first()
-    print(province_data_record_of_this_year.r_d)
+    print('单位GDP能耗：', province_data_record_of_this_year.per_unit_gdp)
+    print('单位GDP二氧化碳排放量：',province_data_record_of_this_year.co2_per_gdp)
+    print('单位GDP用水量：',province_data_record_of_this_year.water_per_gdp)
+    print('播种面积占比：',province_data_record_of_this_year.planting_area)
+    print('平均受教育年限：',province_data_record_of_this_year.edu_years)
+    print('人均生态足迹：',province_data_record_of_this_year.ef_per)
+    print('人均用水量：',province_data_record_of_this_year.water_per)
+    print('养老保险覆盖率：',province_data_record_of_this_year.pension_cov)
+    print('医疗保险覆盖率：',province_data_record_of_this_year.medical_cov)
+    print('失业保险覆盖率：',province_data_record_of_this_year.unemployment_cov)
+    print('可再生能源供给占比(省)：',province_data_record_of_this_year.renewable_energy_per)
+
     # if not isinstance(province_data_record_of_this_year, models.ProvinceDataRecord):
     #     return f'{province_name}-{year}的数据不存在'
     province_data_record_of_last_year = models.ProvinceDataRecord.objects.filter(province__name=province_name, year=year-1).first()
