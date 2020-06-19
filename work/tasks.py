@@ -367,7 +367,9 @@ def do_gather_data(province_name: str, year: int):
             area__province__name=province_name, year=year).all()
         ]
     print("***"*30)
-    print(cities_of_this_year[0].r_d)
+    for m in cities_of_this_year:
+        print(m.area,'可持续发展得分：', m.city_sustainable, '温室气体排放:', m.greenhouse, '氮排放:', m.nitrogen, '取水量:',m.water_withdrawal, '土地利用:',m.land_use,'生态足迹:',m.EF)
+        
     cities_of_last_year = [
         city_data_record for city_data_record in models.CityDataRecord.objects.filter(
             area__province__name=province_name, year=year-1).all()
@@ -460,9 +462,13 @@ def new_calc_city_addition(
         gep = step * weight
         data[f'{k}_weight'] = weight
         data[f'{k}_gep'] = gep
+    
 
     for k in city_calc_map:
         city_data_record.__dict__[k] = city_calc_gep(data, k)
+    # print('温室气体排放',data['greenhouse_weight'],'氮排放',data['nitrogen_weight'],'取水量',data['water_withdrawal_weight'],'土地利用',data['land_use_weight'],'生态足迹',data['EF_weight'])
+    print('温室气体排放',data['co2_per_gdp_weight'])
+    
 
     city_data_record.save()
 

@@ -5,5 +5,5 @@ django.setup()
 from work import tasks
 
 
-tasks.do_calc('江苏省', 2018)
+tasks.do_calc('江苏省', 2021)
 
