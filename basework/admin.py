@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import ConstantEg, Annual_data, Prov_Annual_data, Calculated_value, Prov_Calculated_value, ImportFile_excel
 from .caldata import *
 from work.models import CityDataRecord, ProvinceDataRecord, Province
-from .utils import takedata
+from .utils import takedata, takedata_lastyear
 
 
 # Register your models here.
@@ -442,6 +442,7 @@ class ImportFile_excelAdmin(admin.ModelAdmin):
         print('*'*30)
         obj.save()
         takedata(obj.excelfile.path, obj.arealevel, obj.province, obj.year)
+        takedata_lastyear(obj.excelfile.path, obj.arealevel, obj.province, obj.year)
         return super().save_model(request, obj, form, change)
     # 设置函数的显示名称
     gotfile.short_description = '反馈文件名'

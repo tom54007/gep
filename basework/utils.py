@@ -242,7 +242,125 @@ def takedata(filename, arealevel, province, year):
                 updatabase = dict(items)
                 Annual_data.objects.filter(province=province, area=i.name, year=year).update(**updatabase)
 
-        
+# 写入前期值
+def takedata_lastyear(filename, arealevel, province, year):
+    year = year - 1
+    # 解析二氧化碳和生态足迹的数据的数据表
+    df = pd.read_excel(filename, sheet_name=eg_sheet_name, header=[0,1])
+    df = df.set_index(df.columns[0])
+    df = df.stack(level=0).stack(level=0).reset_index()
+    df.columns = list(df.columns[1:].insert(0, 'Resources'))
+    last_year = df[df['level_2']=='前期值']
+    print(last_year)
+    # 解析地区相关发展数据的数据表
+    df_dev = pd.read_excel(filename, sheet_name=economic_sheet_name, header=[0,1])
+    df_dev = df_dev.set_index(df_dev.columns[0])
+    df_dev = df_dev.stack(level=0).stack(level=0).reset_index()
+    df_dev.columns = list(df_dev.columns[1:].insert(0, 'city'))
+    last_year_dev = df_dev[df_dev['level_2']=='前期值']
+    print(last_year)
+    # 解析无需计算所得的各项单项基础指标
+    df_item = pd.read_excel(filename, sheet_name=already_item_sheet_name, header=[0,1,2])
+    df_item = df_item.set_index(df_item.columns[0])
+    df_item = df_item.stack(level=0).stack(level=0).reset_index()
+    df_item.columns = list(df_item.columns[1:].insert(0, 'city'))
+    print(df_item)
+    # this_year_item = df_item[df_item['city']=='南京'][df_item['level_2']==read_items_name[0][1]]['前期值']
+    # this_year_item.values[0]
+    # print(this_year_item)
+    # 判断数据级别：省级/市级
+    ## 若为省级，则更新省级数据库数据
+    if arealevel == 'province':
+        get_database = Prov_Annual_data.objects.filter(province=province, year=year)
+        # 加入省份的名称
+        k = last_year
+        k_dev = last_year_dev
+        k_items = df_item
+        items = []
+        print(province)
+        print(k)
+        # print(to_database)
+        for m in read_prov_items_name:
+            prov_item_each = df_item[df_item['city']==str(province)][df_item['level_2']==m[1]]['前期值']
+            print(prov_item_each)
+            if len(prov_item_each)==0:
+                the_each = 0
+            else:
+                the_each = prov_item_each.values[0]
+            print(the_each)
+            items.append([m[0], the_each])
+        for m in eg_list:
+            area_eg_each = k[k['Resources']==m[1]]
+            if len(area_eg_each)==0:
+                the_each = 0
+            else:
+                the_each = area_eg_each[0].values[0]
+            print(the_each)
+            items.append([m[0], the_each])
+        for m in economic_list_prov:
+            area_dev_each = k_dev[k_dev['level_1']==m[1]]
+            if len(area_dev_each)==0:
+                the_each = 0
+            else:
+                the_each = area_dev_each[0].values[0]
+            print(the_each)
+            items.append([m[0], the_each])
+        if len(get_database)==0:
+            items.append(['province',province])
+            items.append(['year',year])
+            updatabase = dict(items)
+            Prov_Annual_data.objects.create(**updatabase)
+        else:
+            updatabase = dict(items)
+            Prov_Annual_data.objects.filter(province=province, year=year).update(**updatabase)
+    ## 若为市级则通过循环更新对应地区的数据库数据
+    # this_year_item = df_item[df_item['city']=='南京'][df_item['level_2']==read_items_name[0][1]]['前期值']
+    # this_year_item.values[0]
+    elif arealevel == 'area':
+        get_area = Area.objects.filter(province__name=province)
+        get_database = Annual_data.objects.filter(province=province, year=year)
+        annual_data = Annual_data()
+        area_list = []
+        for i in get_area:
+            # 加入各个地区的名称
+            k = last_year[last_year['level_1']==i.name]
+            k_dev = last_year_dev[last_year_dev['city']==i.name]
+            to_database = get_database.filter(area=i.name)
+            items = []
+            # print(to_database)
+            for m in read_items_name:
+                area_item_each = df_item[df_item['city']==i.name][df_item['level_2']==m[1]]['前期值']
+                if len(area_item_each)==0:
+                    the_each = 0
+                else:
+                    the_each = area_item_each.values[0]
+                print(the_each)
+                items.append([m[0], the_each])
+            for m in eg_list:
+                area_eg_each = k[k['Resources']==m[1]]
+                if len(area_eg_each)==0:
+                    the_each = 0
+                else:
+                    the_each = area_eg_each[0].values[0]
+                print(the_each)
+                items.append([m[0], the_each])
+            for m in economic_list_area:
+                area_dev_each = k_dev[k_dev['level_1']==m[1]]
+                if len(area_dev_each)==0:
+                    the_each = 0
+                else:
+                    the_each = area_dev_each[0].values[0]
+                print(the_each)
+                items.append([m[0], the_each])
+            if len(to_database)==0:
+                items.append(['province',province])
+                items.append(['area',i.name])
+                items.append(['year',year])
+                updatabase = dict(items)
+                Annual_data.objects.create(**updatabase)
+            else:
+                updatabase = dict(items)
+                Annual_data.objects.filter(province=province, area=i.name, year=year).update(**updatabase)
 
 
 
