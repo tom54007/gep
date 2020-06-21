@@ -51,6 +51,9 @@ class Annual_dataAdmin(admin.ModelAdmin):
                 (
                     'GDP','Sown_area','Total_population','Total_energy_consumption','Total_water_consumption','The_total_area','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
                 ),
+                (
+                    'r_d','rural_urban','urban_per','rural_per','garbage','bus_per','urban_sewage','mortality','pm25','so2_emissions','cod_emissions','nh_emissions'
+                ),
             )
         }),
     )
@@ -143,7 +146,7 @@ class Annual_dataAdmin(admin.ModelAdmin):
             # 单位GDP能耗	地区当年能源消费总量/地区当年生产总值
             per_unit_gdp = d.Total_energy_consumption/d.GDP
             # 单位GDP二氧化碳排放量	地区当年二氧化碳排放量/地区当年生产总值
-            co2_per_gdp = total_co2/d.GDP
+            co2_per_gdp = total_co2/d.GDP*1000
             # 单位GDP用水量	地区当年用水总量/地区当年生产总值
             water_per_gdp = d.Total_water_consumption/d.GDP
             # 播种面积占比	地区当年播种面积/地区当年总面积
@@ -158,7 +161,7 @@ class Annual_dataAdmin(admin.ModelAdmin):
             # 人均用水量	地区当年用水总量/地区当年总人口
             water_per = d.Total_water_consumption/d.Total_population
             # 养老保险覆盖率	地区当年基本养老保险职工人数/地区当年总人口
-            pension_cov = d.Number_of_junior_high_school/d.Total_population
+            pension_cov = d.Number_of_employees_in_basic_pension_insurance/d.Total_population
             # 医疗保险覆盖率	地区当年基本医疗保险人数/地区当年总人口
             medical_cov = d.Number_of_basic_medical_insurance/d.Total_population
             # 失业保险覆盖率	地区当年失业保险人数/地区当年总人口
@@ -207,6 +210,9 @@ class Prov_Annual_dataAdmin(admin.ModelAdmin):
                 ),
                 (
                     'GDP','Sown_area','Total_population','Total_power_generation','Total_energy_consumption','Total_water_consumption','The_total_area','Number_of_employees_in_basic_pension_insurance','Number_of_basic_medical_insurance','Number_of_unemployment_insurance','Nuclear_power_generation','Wind_power_generation','Hydropower_generation','Photovoltaic_power_generation','Primary_school_number','Number_of_junior_high_school','High_school_number','University_and_above',
+                ),
+                (
+                    'r_d','rural_urban','urban_per','rural_per','garbage','bus_per','urban_sewage','mortality','pm25','so2_emissions','cod_emissions','nh_emissions'
                 ),
             )
         }),
@@ -300,7 +306,7 @@ class Prov_Annual_dataAdmin(admin.ModelAdmin):
             # 单位GDP能耗	地区当年能源消费总量/地区当年生产总值
             per_unit_gdp = d.Total_energy_consumption/d.GDP
             # 单位GDP二氧化碳排放量	地区当年二氧化碳排放量/地区当年生产总值
-            co2_per_gdp = total_co2/d.GDP
+            co2_per_gdp = total_co2/d.GDP*1000
             # 单位GDP用水量	地区当年用水总量/地区当年生产总值
             water_per_gdp = d.Total_water_consumption/d.GDP
             # 播种面积占比	地区当年总面积/地区当年播种面积
@@ -312,7 +318,7 @@ class Prov_Annual_dataAdmin(admin.ModelAdmin):
             # 人均用水量	地区当年用水总量/地区当年总人口
             water_per = d.Total_water_consumption/d.Total_population
             # 养老保险覆盖率	地区当年基本养老保险职工人数/地区当年总人口
-            pension_cov = d.Number_of_junior_high_school/d.Total_population
+            pension_cov = d.Number_of_employees_in_basic_pension_insurance/d.Total_population
             # 医疗保险覆盖率	地区当年基本医疗保险人数/地区当年总人口
             medical_cov = d.Number_of_basic_medical_insurance/d.Total_population
             # 失业保险覆盖率	地区当年失业保险人数/地区当年总人口
@@ -372,6 +378,9 @@ class Calculated_valueAdmin(admin.ModelAdmin):
                 (
                     'per_unit_gdp','co2_per_gdp','water_per_gdp','planting_area','edu_years','ef_per','water_per','pension_cov','medical_cov','unemployment_cov',
                 ),
+                (
+                    'green_innovation', 'energy_use','parma_ratio','income','infrastructure','education','life_expectancy','social_security','air_pollution','greenhouse','nitrogen','water_withdrawal','land_use','EF','city_green_economy','city_sustainable','city_gep_plus'
+                ),
             )
         }),
     )
@@ -406,6 +415,9 @@ class Prov_Calculated_valueAdmin(admin.ModelAdmin):
                 ),
                 (
                     'per_unit_gdp','co2_per_gdp','water_per_gdp','planting_area','edu_years','ef_per','water_per','pension_cov','medical_cov','unemployment_cov','renewable_energy_per',
+                ),
+                (
+                    'green_innovation', 'renewable_energy','energy_use','parma_ratio','income','infrastructure','education','life_expectancy','social_security','air_pollution','greenhouse','nitrogen','water_withdrawal','land_use','EF','city_green_economy','city_sustainable','city_gep_plus'
                 ),
             )
         }),

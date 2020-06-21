@@ -66,9 +66,58 @@ economic_list_prov = [
     ('High_school_number','高中人数'),
     ('University_and_above','大学及以上人数')
 ]
+read_items_name = [
+    ('r_d','规模以上工业企业R&D经费'),
+    ('rural_urban','乡-城人均年收入'),
+    ('urban_per','城镇居民可支配收入'),
+    ('rural_per','农村居民可支配收入'),
+    ('garbage','生活垃圾无害化处理率'),
+    ('bus_per','平均每万人拥有公交车辆'),
+    ('urban_sewage','城镇生活污水集中处理率'),
+    ('mortality','死亡率'),
+    ('pm25','PM2.5年平均浓度'),
+    ('so2_emissions','二氧化硫排放量'),
+    ('cod_emissions','化学需氧量排放量'),
+    ('nh_emissions','氨氮排放量')
+]
+read_prov_items_name = [
+    ('r_d','企业R&D内部经费支出'),
+    ('rural_urban','乡-城人均年收入'),
+    ('urban_per','城镇居民平均可支配收入'),
+    ('rural_per','农村居民平均可支配收入'),
+    ('garbage','生活垃圾无害化处理率'),
+    ('bus_per','平均每万人拥有公交车辆'),
+    ('urban_sewage','城镇生活污水集中处理率'),
+    ('mortality','死亡率'),
+    ('pm25','PM2.5年平均浓度'),
+    ('so2_emissions','二氧化硫排放量'),
+    ('cod_emissions','化学需氧量排放量'),
+    ('nh_emissions','氨氮排放量')
+]
+
+
+
 eg_sheet_name = "二氧化碳和生态足迹的数据"
 economic_sheet_name = "地区相关发展数据"
+already_item_sheet_name = "无计算所得指标数据"
 
+
+# 定义单项计算公式
+## 定义正向指标计算公式
+def item_calc_positive(last_value, this_value, maxvalue):
+    change_value = this_value - last_value
+    weight_value = maxvalue / last_value
+    process_value = (this_value-last_value)/(maxvalue-last_value)
+    item_score = process_value * weight_value
+    return (item_score, weight_value)
+
+## 定义反向指标计算公式
+def item_calc_negative(last_value, this_value, minvalue):
+    change_value = last_value - this_value
+    weight_value = last_value / minvalue
+    process_value = (this_value-last_value)/(minvalue-last_value)
+    item_score = process_value * weight_value
+    return (item_score, weight_value)
 
 
 # 定义数据表读取解析函数
@@ -90,6 +139,15 @@ def takedata(filename, arealevel, province, year):
     this_year_dev = df_dev[df_dev['level_2']=='当期值']
     last_year_dev = df_dev[df_dev['level_2']=='前期值']
     print(this_year_dev)
+    # 解析无需计算所得的各项单项基础指标
+    df_item = pd.read_excel(filename, sheet_name=already_item_sheet_name, header=[0,1,2])
+    df_item = df_item.set_index(df_item.columns[0])
+    df_item = df_item.stack(level=0).stack(level=0).reset_index()
+    df_item.columns = list(df_item.columns[1:].insert(0, 'city'))
+    print(df_item)
+    # this_year_item = df_item[df_item['city']=='南京'][df_item['level_2']==read_items_name[0][1]]['前期值']
+    # this_year_item.values[0]
+    # print(this_year_item)
     # 判断数据级别：省级/市级
     ## 若为省级，则更新省级数据库数据
     if arealevel == 'province':
@@ -97,10 +155,20 @@ def takedata(filename, arealevel, province, year):
         # 加入省份的名称
         k = this_year
         k_dev = this_year_dev
+        k_items = df_item
         items = []
         print(province)
         print(k)
         # print(to_database)
+        for m in read_prov_items_name:
+            prov_item_each = df_item[df_item['city']==str(province)][df_item['level_2']==m[1]]['当期值']
+            print(prov_item_each)
+            if len(prov_item_each)==0:
+                the_each = 0
+            else:
+                the_each = prov_item_each.values[0]
+            print(the_each)
+            items.append([m[0], the_each])
         for m in eg_list:
             area_eg_each = k[k['Resources']==m[1]]
             if len(area_eg_each)==0:
@@ -126,6 +194,8 @@ def takedata(filename, arealevel, province, year):
             updatabase = dict(items)
             Prov_Annual_data.objects.filter(province=province, year=year).update(**updatabase)
     ## 若为市级则通过循环更新对应地区的数据库数据
+    # this_year_item = df_item[df_item['city']=='南京'][df_item['level_2']==read_items_name[0][1]]['前期值']
+    # this_year_item.values[0]
     elif arealevel == 'area':
         get_area = Area.objects.filter(province__name=province)
         get_database = Annual_data.objects.filter(province=province, year=year)
@@ -138,6 +208,14 @@ def takedata(filename, arealevel, province, year):
             to_database = get_database.filter(area=i.name)
             items = []
             # print(to_database)
+            for m in read_items_name:
+                area_item_each = df_item[df_item['city']==i.name][df_item['level_2']==m[1]]['当期值']
+                if len(area_item_each)==0:
+                    the_each = 0
+                else:
+                    the_each = area_item_each.values[0]
+                print(the_each)
+                items.append([m[0], the_each])
             for m in eg_list:
                 area_eg_each = k[k['Resources']==m[1]]
                 if len(area_eg_each)==0:

@@ -110,6 +110,24 @@ class Annual_data(models.Model):
     High_school_number = models.FloatField(verbose_name='高中人数', null=False, blank=False)
     University_and_above = models.FloatField(verbose_name='大学及以上人数', null=False, blank=False)
 
+    # 单项基础指标（无需计算所得项）
+    r_d=models.FloatField(verbose_name='规模以上工业企业R&D经费支出(万元)', null=False, blank=False)
+    rural_urban=models.FloatField(verbose_name='乡-城人均年收入比(/)', null=False, blank=False)
+    urban_per=models.FloatField(verbose_name='城镇居民人均可支配收入(元)', null=False, blank=False)
+    rural_per=models.FloatField(verbose_name='农村居民人均可支配收入(元)', null=False, blank=False)
+    garbage=models.FloatField(verbose_name='生活垃圾无害化处理率(%)', null=False, blank=False)
+    bus_per=models.FloatField(verbose_name='平均万人拥有公共汽车(/)', null=False, blank=False)
+    urban_sewage=models.FloatField(verbose_name='城镇生活污水集中处理率(%)', null=False, blank=False)
+    mortality=models.FloatField(verbose_name='死亡率(%)', null=False, blank=False)
+    pm25=models.FloatField(verbose_name='PM2.5年平均浓度(微克/立方米)', null=False, blank=False)
+    so2_emissions=models.FloatField(verbose_name='二氧化硫排放量(万吨)', null=False, blank=False)
+    cod_emissions=models.FloatField(verbose_name='化学需氧量排放量(万吨)', null=False, blank=False)
+    nh_emissions=models.FloatField(verbose_name='氨氮排放量(万吨)', null=False, blank=False)
+
+
+    # 单项基础指标
+    
+
 
 
     class Meta:
@@ -167,6 +185,25 @@ class Calculated_value(models.Model):
     pension_cov = models.FloatField(verbose_name='养老保险覆盖率', null=True)
     medical_cov = models.FloatField(verbose_name='医疗保险覆盖率', null=True)
     unemployment_cov = models.FloatField(verbose_name='失业保险覆盖率', null=True)
+
+    # GEP指标得分计算
+    green_innovation=models.FloatField(verbose_name='绿色创新', null=True)
+    energy_use=models.FloatField(verbose_name='能源利用', null=True)
+    parma_ratio=models.FloatField(verbose_name='帕尔玛比率', null=True)
+    income=models.FloatField(verbose_name='收入', null=True)
+    infrastructure=models.FloatField(verbose_name='基础设施建设', null=True)
+    education=models.FloatField(verbose_name='教育', null=True)
+    life_expectancy=models.FloatField(verbose_name='预期寿命', null=True)
+    social_security=models.FloatField(verbose_name='社会保障', null=True)
+    air_pollution=models.FloatField(verbose_name='大气污染', null=True)
+    greenhouse=models.FloatField(verbose_name='温室气体排放', null=True)
+    nitrogen=models.FloatField(verbose_name='氮排放', null=True)
+    water_withdrawal=models.FloatField(verbose_name='取水量', null=True)
+    land_use=models.FloatField(verbose_name='土地利用', null=True)
+    EF=models.FloatField(verbose_name='生态足迹', null=True)
+    city_green_economy=models.FloatField(verbose_name='绿色经济', null=True)
+    city_sustainable=models.FloatField(verbose_name='可持续发展', null=True)
+    city_gep_plus=models.FloatField(verbose_name='GEP+', null=True)
     
 
 
@@ -238,6 +275,20 @@ class Prov_Annual_data(models.Model):
     High_school_number = models.FloatField(verbose_name='高中人数', null=False, blank=False)
     University_and_above = models.FloatField(verbose_name='大学及以上人数', null=False, blank=False)
 
+    # 单项基础指标（无需计算所得项）
+    r_d=models.FloatField(verbose_name='企业R&D内部经费支出', null=False, blank=False)
+    rural_urban=models.FloatField(verbose_name='乡-城人均年收入比(/)', null=False, blank=False)
+    urban_per=models.FloatField(verbose_name='城镇居民人均可支配收入(元)', null=False, blank=False)
+    rural_per=models.FloatField(verbose_name='农村居民人均可支配收入(元)', null=False, blank=False)
+    garbage=models.FloatField(verbose_name='生活垃圾无害化处理率(%)', null=False, blank=False)
+    bus_per=models.FloatField(verbose_name='平均万人拥有公共汽车(/)', null=False, blank=False)
+    urban_sewage=models.FloatField(verbose_name='城镇生活污水集中处理率(%)', null=False, blank=False)
+    mortality=models.FloatField(verbose_name='死亡率(%)', null=False, blank=False)
+    pm25=models.FloatField(verbose_name='PM2.5年平均浓度(微克/立方米)', null=False, blank=False)
+    so2_emissions=models.FloatField(verbose_name='二氧化硫排放量(万吨)', null=False, blank=False)
+    cod_emissions=models.FloatField(verbose_name='化学需氧量排放量(万吨)', null=False, blank=False)
+    nh_emissions=models.FloatField(verbose_name='氨氮排放量(万吨)', null=False, blank=False)
+
     class Meta:
         ordering = '-year', 'province'
         verbose_name = '省级年度原始数据'
@@ -291,6 +342,26 @@ class Prov_Calculated_value(models.Model):
     medical_cov = models.FloatField(verbose_name='医疗保险覆盖率', null=True)
     unemployment_cov = models.FloatField(verbose_name='失业保险覆盖率', null=True)
     renewable_energy_per = models.FloatField(verbose_name='可再生能源供给占比(省)', null=True)
+
+    # GEP指标得分计算
+    green_innovation=models.FloatField(verbose_name='绿色创新', null=True)
+    renewable_energy=models.FloatField(verbose_name='可再生能源供给', null=True)
+    energy_use=models.FloatField(verbose_name='能源利用', null=True)
+    parma_ratio=models.FloatField(verbose_name='帕尔玛比率', null=True)
+    income=models.FloatField(verbose_name='收入', null=True)
+    infrastructure=models.FloatField(verbose_name='基础设施建设', null=True)
+    education=models.FloatField(verbose_name='教育', null=True)
+    life_expectancy=models.FloatField(verbose_name='预期寿命', null=True)
+    social_security=models.FloatField(verbose_name='社会保障', null=True)
+    air_pollution=models.FloatField(verbose_name='大气污染', null=True)
+    greenhouse=models.FloatField(verbose_name='温室气体排放', null=True)
+    nitrogen=models.FloatField(verbose_name='氮排放', null=True)
+    water_withdrawal=models.FloatField(verbose_name='取水量', null=True)
+    land_use=models.FloatField(verbose_name='土地利用', null=True)
+    EF=models.FloatField(verbose_name='生态足迹', null=True)
+    city_green_economy=models.FloatField(verbose_name='绿色经济', null=True)
+    city_sustainable=models.FloatField(verbose_name='可持续发展', null=True)
+    city_gep_plus=models.FloatField(verbose_name='GEP+', null=True)
 
     class Meta:
         ordering = '-year', 'province'
